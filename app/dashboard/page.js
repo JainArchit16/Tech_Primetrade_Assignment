@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LogOut, Plus, Trash2, Search, Activity } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -44,6 +45,7 @@ export default function Dashboard() {
   };
 
   const handleLogout = async () => {
+    toast.success("Logged Out Successfully");
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/login");
   };
