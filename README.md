@@ -2,7 +2,7 @@
 
 A modern, full-stack web application designed for crypto-native analysts to manage intelligence data. Built with Next.js 14, this project features secure JWT authentication, a responsive grid-themed UI, and real-time CRUD operations.
 
-## 🚀 Features
+## Features
 
 * **Authentication**: Secure Register/Login flow using JWT stored in HTTP-Only cookies.
 * **Dashboard**: Protected route for managing intelligence tasks (CRUD).
@@ -11,7 +11,7 @@ A modern, full-stack web application designed for crypto-native analysts to mana
 * **Design**: "Crypto-native" aesthetic with a dark mode grid background, glassmorphism effects, and responsive layout.
 * **Security**: Password hashing (Bcrypt), Token verification (Jose), and API route protection.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 * **Framework**: Next.js 14 (App Router)
 * **Language**: JavaScript / Node.js
@@ -19,7 +19,7 @@ A modern, full-stack web application designed for crypto-native analysts to mana
 * **Styling**: Tailwind CSS + Lucide Icons
 * **Auth**: JWT (Jose) + Bcrypt.js
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### Prerequisites
 * Node.js (v18+)
@@ -51,7 +51,7 @@ A modern, full-stack web application designed for crypto-native analysts to mana
     ```
     Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 📡 API Documentation
+## API Documentation
 
 The API collection is available in `trading_intel_api.json` (Postman format).
 
@@ -68,7 +68,7 @@ The API collection is available in `trading_intel_api.json` (Postman format).
 
 ---
 
-## 📈 Production Scalability Strategy
+## Production Scalability Strategy
 
 *(Deliverable Item #5)*
 
