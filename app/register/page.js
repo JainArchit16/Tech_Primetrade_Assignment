@@ -41,6 +41,7 @@ export default function Register() {
     const validationError = validateForm();
     if (validationError) {
       toast.dismiss(loader);
+      toast.error(validationError);
       setError(validationError);
       return;
     }
