@@ -23,10 +23,27 @@ export default function Register() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  const validateForm = () => {
+    if (formData.name.length < 2) return "Name must be at least 2 characters.";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email))
+      return "Please enter a valid email address.";
+    if (formData.password.length < 6)
+      return "Password must be at least 6 characters.";
+    return null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
       const res = await fetch("/api/auth/register", {
@@ -49,13 +66,11 @@ export default function Register() {
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4 relative overflow-hidden">
-      {/* Background Glow Effects */}
       <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
-        <div className="bg-zinc-900/40 border border-white/10 p-8 rounded-2xl backdrop-blur-xl shadow-2xl relative overflow-hidden">
-          {/* Top accent line */}
+        <div className="bg-zinc-900/40 border border-white/10 p-8 rounded-2xl backdrop-blur-xl shadow-2xl relative">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50" />
 
           <div className="text-center mb-8">
@@ -74,73 +89,67 @@ export default function Register() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name Field */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-zinc-400 ml-1">
                 Full Name
               </label>
               <div className="relative group/input">
                 <User
-                  className="absolute left-3 top-3.5 text-zinc-500 group-focus-within/input:text-white transition-colors"
+                  className="absolute left-3 top-3.5 text-zinc-500"
                   size={18}
                 />
                 <input
                   type="text"
                   placeholder="John Doe"
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder:text-zinc-600 focus:border-white/30 focus:bg-black/60 focus:ring-1 focus:ring-white/20 outline-none transition-all duration-300"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:border-white/30 focus:bg-black/60 outline-none transition-all"
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  required
                 />
               </div>
             </div>
 
-            {/* Email Field */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-zinc-400 ml-1">
                 Email Address
               </label>
               <div className="relative group/input">
                 <Mail
-                  className="absolute left-3 top-3.5 text-zinc-500 group-focus-within/input:text-white transition-colors"
+                  className="absolute left-3 top-3.5 text-zinc-500"
                   size={18}
                 />
                 <input
                   type="email"
                   placeholder="analyst@firm.com"
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder:text-zinc-600 focus:border-white/30 focus:bg-black/60 focus:ring-1 focus:ring-white/20 outline-none transition-all duration-300"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:border-white/30 focus:bg-black/60 outline-none transition-all"
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  required
                 />
               </div>
             </div>
 
-            {/* Password Field */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-zinc-400 ml-1">
                 Password
               </label>
               <div className="relative group/input">
                 <Lock
-                  className="absolute left-3 top-3.5 text-zinc-500 group-focus-within/input:text-white transition-colors"
+                  className="absolute left-3 top-3.5 text-zinc-500"
                   size={18}
                 />
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Create a strong password"
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-10 text-white placeholder:text-zinc-600 focus:border-white/30 focus:bg-black/60 focus:ring-1 focus:ring-white/20 outline-none transition-all duration-300"
+                  placeholder="Min 6 chars"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-10 text-white focus:border-white/30 focus:bg-black/60 outline-none transition-all"
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
-                  required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3.5 text-zinc-500 hover:text-white transition-colors"
+                  className="absolute right-3 top-3.5 text-zinc-500 hover:text-white"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -150,7 +159,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-white text-black font-bold py-3.5 rounded-xl hover:bg-zinc-200 transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-2 mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full bg-white text-black font-bold py-3.5 rounded-xl hover:bg-zinc-200 transition-all mt-4 flex justify-center items-center gap-2"
             >
               {isLoading ? (
                 <Loader2 size={20} className="animate-spin" />
@@ -161,12 +170,11 @@ export default function Register() {
               )}
             </button>
           </form>
-
           <p className="mt-8 text-center text-zinc-500 text-sm">
             Already have an account?{" "}
             <Link
               href="/login"
-              className="text-white font-medium hover:underline underline-offset-4 decoration-zinc-600"
+              className="text-white font-medium hover:underline"
             >
               Log in
             </Link>
