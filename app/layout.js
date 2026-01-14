@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} min-h-screen bg-black relative`}>
         <div className="fixed inset-0 bg-grid-white pointer-events-none z-0" />
         <div className="relative z-10">
-          <Toaster />
+          <Toaster position="bottom-right" />
           {children}
         </div>
       </body>

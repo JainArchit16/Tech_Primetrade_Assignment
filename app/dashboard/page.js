@@ -11,6 +11,7 @@ import {
   Loader2,
   UserCircle,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -45,8 +46,10 @@ export default function Dashboard() {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
+    const loader = toast.loading("Updating Profile...");
     // Client Validation
     if (user.name.length < 2) {
+      toast.dismiss(loader);
       alert("Name must be at least 2 characters");
       return;
     }
@@ -61,13 +64,16 @@ export default function Dashboard() {
           gender: user.gender,
         }),
       });
+      toast.dismiss(loader);
 
       if (res.ok) {
+        toast.success("Profile Updated");
         const updated = await res.json();
         setUser(updated);
         setIsEditing(false);
       } else {
         const data = await res.json();
+        toast.error(data.error);
         alert(data.error);
       }
     } catch (error) {
@@ -94,15 +100,20 @@ export default function Dashboard() {
       setNewTask("");
       const updatedTasks = await fetch("/api/tasks").then((r) => r.json());
       setTasks(updatedTasks);
+    } else {
+      const data = await res.json();
+      toast.error(data.error);
     }
   };
 
   const handleDeleteTask = async (id) => {
+    toast.success("Task Deleted");
     await fetch(`/api/tasks?id=${id}`, { method: "DELETE" });
     setTasks(tasks.filter((t) => t._id !== id));
   };
 
   const handleLogout = async () => {
+    toast.success("Logout Successfull");
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/login");
   };

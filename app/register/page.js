@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Loader2,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -36,13 +37,12 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+    const loader = toast.loading("Sigining In...");
     const validationError = validateForm();
     if (validationError) {
       setError(validationError);
       return;
     }
-
     setIsLoading(true);
 
     try {
@@ -51,13 +51,17 @@ export default function Register() {
         body: JSON.stringify(formData),
       });
 
+      toast.dismiss(loader);
       if (res.ok) {
+        toast.success("Registered Successfully");
         router.push("/login");
       } else {
         const data = await res.json();
+        toast.error(data.error);
         setError(data.error || "Registration failed");
       }
     } catch (err) {
+      toast.error(err);
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);

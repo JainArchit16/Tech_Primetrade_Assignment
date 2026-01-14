@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -15,18 +16,21 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    const loader = toast.loading("Logging In...");
 
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         body: JSON.stringify(formData),
       });
-
+      toast.dismiss(loader);
       if (res.ok) {
+        toast.success("Logged In");
         router.push("/dashboard");
       } else {
         const data = await res.json();
         setError(data.error || "Login failed");
+        toast.error(data.error);
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
