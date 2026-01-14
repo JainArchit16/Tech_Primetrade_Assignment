@@ -40,6 +40,7 @@ export default function Register() {
     const loader = toast.loading("Sigining In...");
     const validationError = validateForm();
     if (validationError) {
+      toast.dismiss(loader);
       setError(validationError);
       return;
     }
